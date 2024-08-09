@@ -1,0 +1,31 @@
+.excel-addin {
+  &-header-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid black;
+  }
+
+  &-label-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  &-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+
+    &--padded-border {
+      border: 1px dotted black;
+      padding: 1rem;
+    }
+  }
+
+  &-dropdown-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+}
