@@ -1,5 +1,5 @@
 import React from "react";
-import { ListenToSheetOnChange, clearValidations } from "../../../services/Excel services/Excel";
+import { ListenToSheetOnChange, clearFormating } from "../../../services/Excel services/Excel";
 import { APP_NS, FORM_NS } from "..";
 import Label from "../common/Label";
 import Button from "../common/Button";
@@ -22,7 +22,7 @@ const DataValidation = ({ worksheetID, definitionInfo }: Props) => {
   // we memoized it, as it only changes when the workSheet changes or currentDefiniton
   const validatorFunction = React.useCallback(async () => {
     // clears all validations in sheet
-    await clearValidations(worksheetID, definitionInfo.headerRowSpan);
+    await clearFormating(worksheetID, definitionInfo.headerRowSpan);
     // validates worksheet based on definiton validators
     const errCount = await validate(worksheetID, definitionInfo);
     setErrorsCount(errCount);
@@ -37,7 +37,7 @@ const DataValidation = ({ worksheetID, definitionInfo }: Props) => {
 
     // return cleaner function that dettaches worksheet listener and clears validations
     return () => {
-      cleaner.then((clean) => clean()).then(() => clearValidations(worksheetID, definitionInfo.headerRowSpan));
+      cleaner.then((clean) => clean()).then(() => clearFormating(worksheetID, definitionInfo.headerRowSpan));
     };
   }, [isValidating, worksheetID, validatorFunction]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

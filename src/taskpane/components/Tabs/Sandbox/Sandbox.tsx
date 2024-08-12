@@ -1,22 +1,22 @@
 import * as React from "react";
 import "./Sandbox.scss";
-import { DropDown, Option } from "../common/Lists";
-import Label from "../common/Label";
-import useWorksheets from "../../../hooks/useWorksheets";
-import TemplateForm from "../TemplateForm";
+import { DropDown, Option } from "../../common/Lists";
+import Label from "../../common/Label";
+import useWorksheets from "../../../../hooks/useWorksheets";
+import TemplateForm from "../../TemplateForm";
 import {
   CalendarMonthRegular,
   Checkbox1Regular,
   ArrowBidirectionalUpDownFilled,
   ShapeIntersectFilled,
 } from "@fluentui/react-icons";
-import { WorksheetInfo } from "../../../services/types";
-import DataTransfer from "../DataTransferForm";
-import { Tab, TabList } from "../common/TabList";
-import DataValidation from "../DataValidationForm/DataValidation";
-import DataTransformForm from "../DataTransformForm/DataTransformForm";
-import { APP_NS } from "..";
-import useDefinitions from "../../../hooks/useDefinitions";
+import { WorksheetInfo } from "../../../../services/types";
+import DataTransfer from "../../DataTransferForm";
+import { Tab, TabList } from "../../common/TabList";
+import DataValidation from "../../DataValidationForm/DataValidation";
+import DataTransformForm from "../../DataTransformForm/DataTransformForm";
+import { APP_NS } from "../..";
+import useDefinitions from "../../../../hooks/useDefinitions";
 
 interface Props {
   title: string;

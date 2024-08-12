@@ -248,13 +248,13 @@ export const ListenToSheetOnChange = (worksheetID: string, func) => {
 };
 
 /**
- * Clears validation formatting from all used range in target sheet except offsetRows
+ * Clears formatting and propmts from all used range in target sheet except offsetRows
  *
  * @param {*} worksheetID Target worksheet to have its validations cleared
  * @param {number} [offsetRows=0] Offset rows if headers exist and should not get their formatting cleared.
  * @returns {*}
  */
-export const clearValidations = (worksheetID, offsetRows = 0) => {
+export const clearFormating = (worksheetID, offsetRows = 0) => {
   return Excel.run(async (context) => {
     const usedRange = context.workbook.worksheets
       .getItem(worksheetID)

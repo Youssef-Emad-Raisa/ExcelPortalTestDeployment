@@ -1,9 +1,9 @@
 import * as React from "react";
 import "./App.scss";
-import Sandbox from "./Sandbox";
+import Sandbox from "./Tabs/Sandbox";
 import { Tab, TabList } from "./common/TabList";
 import { APP_NS } from ".";
-import Assumptions from "./Assumptions/Assumptions";
+import Assumptions from "./Tabs/Assumptions/Assumptions";
 
 interface Props {
   title: string;
