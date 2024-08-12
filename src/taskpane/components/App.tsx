@@ -24,7 +24,6 @@ const App: React.FC<Props> = (props: Props) => {
   ];
   return (
     <main className={app.$}>
-      <section>This is Version 2</section>
       {tabs[currentTab].component}
       <section className={APP_NS.tabsContainer.$}>
         <TabList
