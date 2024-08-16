@@ -2,6 +2,7 @@ import * as React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./components/App";
 import { FluentProvider, teamsLightTheme } from "@fluentui/react-components";
+import { UserProvider } from "../contexts/UserContext";
 
 /* global document, Office, module, require, HTMLElement */
 
@@ -14,7 +15,9 @@ const root = rootElement ? createRoot(rootElement) : undefined;
 Office.onReady(() => {
   root?.render(
     <FluentProvider theme={teamsLightTheme}>
-      <App title={title} />
+      <UserProvider>
+        <App title={title} />
+      </UserProvider>
     </FluentProvider>
   );
 });

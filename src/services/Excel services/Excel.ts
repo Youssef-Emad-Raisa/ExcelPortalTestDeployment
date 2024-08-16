@@ -309,3 +309,11 @@ export const getActiveWorksheetID = () => {
     return activeWorksheet.id;
   });
 };
+
+export const activateWorksheet = (worksheetID: string) => {
+  return Excel.run(async (context) => {
+    const worksheet = context.workbook.worksheets.getItem(worksheetID);
+    worksheet.activate();
+    return await context.sync();
+  });
+};

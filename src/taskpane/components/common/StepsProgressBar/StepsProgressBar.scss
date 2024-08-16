@@ -1,0 +1,70 @@
+.excel-addin {
+  &-progress-container {
+    border-radius: 0.25rem;
+    width: 100%;
+    display: flex;
+
+    &--vertical {
+      width: auto;
+      height: 100%;
+    }
+  }
+  &-progressbar-container {
+    position: relative;
+    width: 100%;
+    &--vertical {
+      width: auto;
+      height: 100%;
+    }
+  }
+  &-progress {
+    position: absolute;
+    content: "";
+    background-color: rgb(224, 224, 224);
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 0.3rem;
+    border-radius: 0.3rem;
+    width: 100%;
+    transition:
+      width 0.5s ease,
+      height 0.5s ease;
+    &--complete {
+      background-color: #5b5fc7;
+    }
+    &--vertical {
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 100%;
+      width: 0.3rem;
+    }
+  }
+
+  &-steps {
+    display: flex;
+    justify-content: space-between;
+
+    &--vertical {
+      flex-direction: column;
+      height: 100%;
+    }
+    &__step {
+      background-color: rgb(247, 247, 247);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      border: 0.3rem solid rgb(224, 224, 224);
+      z-index: 10000;
+      transition: border 0.5s ease;
+
+      &--done {
+        border: 0.3rem solid #5b5fc7;
+      }
+    }
+  }
+}

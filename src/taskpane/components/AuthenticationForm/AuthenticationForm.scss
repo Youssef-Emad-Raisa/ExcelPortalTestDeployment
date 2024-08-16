@@ -1,0 +1,13 @@
+.excel-addin {
+  &-otp-container {
+    display: flex;
+    gap: 0.4rem;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+
+    &__box {
+      width: 2rem;
+      caret-color: transparent;
+    }
+  }
+}
