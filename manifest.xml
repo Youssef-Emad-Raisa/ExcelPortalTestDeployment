@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="TaskPaneApp">
-  <Id>520734f2-e1e8-45a8-a1e0-36ef36b3d2ee</Id>
+  <Id>ccc96357-abd5-4c0e-9204-3edb26e2fc82</Id>
   <Version>1.0.0.0</Version>
   <ProviderName>Contoso</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName DefaultValue="Excel-Portal DEPLOYED"/>
+  <DisplayName DefaultValue="Raisa Excel Portal"/>
   <Description DefaultValue="Deployed App."/>
   <IconUrl DefaultValue="https://youssef-emad-raisa.github.io/ExcelPortalTestDeployment/assets/icon-32.png"/>
   <HighResolutionIconUrl DefaultValue="https://youssef-emad-raisa.github.io/ExcelPortalTestDeployment/assets/icon-64.png"/>
@@ -69,13 +69,13 @@
         <bt:Url id="Taskpane.Url" DefaultValue="https://youssef-emad-raisa.github.io/ExcelPortalTestDeployment/taskpane.html"/>
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="GetStarted.Title" DefaultValue="Get started with your sample add-in!"/>
-        <bt:String id="CommandsGroup.Label" DefaultValue="Commands Group"/>
-        <bt:String id="TaskpaneButton.Label" DefaultValue="Show Taskpane"/>
+        <bt:String id="GetStarted.Title" DefaultValue="Fastend your work with Raisa Excel Portal that gives you the tools needed to boost Raisa's work directly through Excel."/>
+        <bt:String id="CommandsGroup.Label" DefaultValue="Raisa add-in"/>
+        <bt:String id="TaskpaneButton.Label" DefaultValue="Raisa Economics"/>
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="GetStarted.Description" DefaultValue="Your sample add-in loaded succesfully. Go to the HOME tab and click the 'Show Taskpane' button to get started."/>
-        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Click to Show a Taskpane"/>
+        <bt:String id="GetStarted.Description" DefaultValue="Raisa add-in add-in loaded succesfully. Go to the HOME tab and click the 'Raisa Economics' button to get started."/>
+        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Click to Show Economics Parameters"/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
