@@ -13,11 +13,14 @@ const useWorksheetTransformation = <T>(worksheetID: string, definitonInfo: Defin
   const [definitionKeysHeaderEquivalant, setDefinitionKeysHeaderEquivalant] = React.useState<T>({} as T);
   React.useEffect(() => {
     if (worksheetID === "" || worksheetID === undefined) return;
+    // gets the first row of the sheet and stores its values as the headers
     getRow(worksheetID, 0).then((headers) => setWorksheetHeaders(headers));
   }, [worksheetID]);
 
+  // gets header keys from the definition passed
   const accessKeys = definitonInfo ? createArrayOfDefinitionColumnAccessKey(definitonInfo.definition) : [];
 
+  // creates transformed worksheet based on the definition keys
   const createTransformedWorkSheet = async () => {
     const rows = await getUsedRows(worksheetID, 1);
 

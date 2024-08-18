@@ -161,6 +161,13 @@ export const getUsedRows = (worksheetID: string, offsetRows: number = 0) => {
     // Get the worksheet by ID
     const worksheet = context.workbook.worksheets.getItem(worksheetID);
 
+    const allRange = worksheet.getUsedRange();
+    allRange.load("rowCount");
+    await context.sync();
+    // checks if the offset is smaller than all rows in the used range so that we can resize within the rows count
+    // if the offset is larger than all range we return an empty array
+    if (allRange.rowCount <= offsetRows) return [];
+
     // Get the used range of the worksheet
     const usedRange = worksheet.getUsedRange().getOffsetRange(offsetRows, 0).getResizedRange(-offsetRows, 0);
 
@@ -256,11 +263,15 @@ export const ListenToSheetOnChange = (worksheetID: string, func) => {
  */
 export const clearFormating = (worksheetID, offsetRows = 0) => {
   return Excel.run(async (context) => {
-    const usedRange = context.workbook.worksheets
-      .getItem(worksheetID)
-      .getUsedRange()
-      .getOffsetRange(offsetRows, 0)
-      .getResizedRange(-offsetRows, 0);
+    const worksheet = context.workbook.worksheets.getItem(worksheetID);
+    const allRange = worksheet.getUsedRange();
+    allRange.load("rowCount");
+    await context.sync();
+    // checks if the offset is smaller than all rows in the used range so that we can resize within the rows count
+    // if the offset is larger than all range we return an empty array
+    if (allRange.rowCount <= offsetRows) return;
+
+    const usedRange = worksheet.getUsedRange().getOffsetRange(offsetRows, 0).getResizedRange(-offsetRows, 0);
 
     usedRange.format.fill.clear();
     usedRange.dataValidation.clear();

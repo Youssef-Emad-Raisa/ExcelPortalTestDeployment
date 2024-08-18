@@ -3,7 +3,7 @@ import "./Assumptions.scss";
 import { APP_NS } from "../..";
 import useWorksheets from "../../../../hooks/useWorksheets";
 import useDefinitions from "../../../../hooks/useDefinitions";
-import { Accordion, AccordionHeader, AccordionItem, AccordionPanel } from "@fluentui/react-components";
+import { Accordion, AccordionHeader, AccordionItem, AccordionPanel, Field, Input } from "@fluentui/react-components";
 import Label from "../../common/Label";
 import StepsProgressBar from "../../common/StepsProgressBar/StepsProgressBar";
 import Step from "../../common/StepsProgressBar/Step/Step";
@@ -14,6 +14,8 @@ import useWorksheetTransformation from "../../../../hooks/useWorksheetTransforma
 import { activateWorksheet, getUsedRows } from "../../../../services/Excel services/Excel";
 import useWorksheetValidation from "../../../../hooks/useWorksheetValidation";
 import { createRecordFromDefinitonValueRows } from "../../../../utils/definition-utils";
+import ComboBox from "../../common/Lists/ComboBox";
+import { DropDown, Option } from "../../common/Lists";
 
 const Assumptions = () => {
   const labelContainer = APP_NS.labelContainer;
@@ -56,6 +58,7 @@ const Assumptions = () => {
             <Button
               onClick={async () => {
                 const transformedWorksheet = await createTransformedWorkSheet();
+                setDefinitionKeysHeaderEquivalant({});
                 activateWorksheet(transformedWorksheet);
                 setCurrentStep((prev) => prev + 1);
               }}
@@ -83,8 +86,9 @@ const Assumptions = () => {
             </Button>
 
             <Button
-              disabled={!(errorsCount === 0)}
+              disabled={!isValidating || errorsCount !== 0}
               onClick={() => {
+                setIsValidating(false);
                 setCurrentStep((prev) => prev + 1);
               }}
             >
@@ -106,24 +110,38 @@ const Assumptions = () => {
       label: "Data Upload",
       button_label: "Upload",
       component: (
-        <>
-          <Button
-            disabled={!(errorsCount === 0)}
-            onClick={() => {
-              getUsedRows(state.activeWorksheetID, definitionsInfoList[0].headerRowSpan).then((values) => {
-                const definition = definitionsInfoList[0].definition;
-                values = values.map((row) => row.map((item) => (item === "" ? null : item)));
-                const data = values.map((row) => createRecordFromDefinitonValueRows(definition, row));
-                definitionsInfoList[0]
-                  .post(data)
-                  .then(() => setCurrentStep((prev) => prev + 1))
-                  .catch((err) => console.dir(err));
-              });
-            }}
-          >
-            Upload
-          </Button>
-        </>
+        <div className={APP_NS.flexGapped._.column.$}>
+          <div>
+            <Field label="Lookup Name">
+              <Input type="text" placeholder="Enter Lookup Name" />
+            </Field>
+            <Field label="Tags">
+              <DropDown placeholder="Select Tag" multiselect>
+                <Option value="tag-1">Tag 1</Option>
+                <Option value="tag-2">Tag 2</Option>
+                <Option value="tag-3">Tag 3</Option>
+              </DropDown>
+            </Field>
+          </div>
+          <div>
+            <Button
+              disabled={errorsCount !== 0}
+              onClick={() => {
+                getUsedRows(state.activeWorksheetID, definitionsInfoList[0].headerRowSpan).then((values) => {
+                  const definition = definitionsInfoList[0].definition;
+                  values = values.map((row) => row.map((item) => (item === "" ? null : item)));
+                  const data = values.map((row) => createRecordFromDefinitonValueRows(definition, row));
+                  definitionsInfoList[0]
+                    .post(data)
+                    .then(() => setCurrentStep((prev) => prev + 1))
+                    .catch((err) => console.dir(err));
+                });
+              }}
+            >
+              Upload
+            </Button>
+          </div>
+        </div>
       ),
     },
     {

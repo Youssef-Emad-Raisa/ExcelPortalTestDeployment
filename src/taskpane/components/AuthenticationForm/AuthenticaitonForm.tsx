@@ -13,7 +13,9 @@ const AuthenticaitonForm = () => {
   const [showOTPForm, setShowOTPFOrm] = React.useState(false);
   const digits = 6;
   const refs = React.useRef(new Array(digits).fill("").map((_) => React.useRef<HTMLInputElement>()));
-  console.log(refs);
+  React.useEffect(() => {
+    if (showOTPForm) refs.current[0].current.focus();
+  }, [showOTPForm]);
   const [otp, setOTP] = React.useState(new Array(digits).fill(""));
   const handleEmailFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,13 +59,11 @@ const AuthenticaitonForm = () => {
               value={digit}
               onChange={(e) => {
                 const newOTP = [...otp];
-                console.log("Change in index " + index);
-                if (isNaN(Number(e.target.value)) || e.target.value.length > 1) return;
-                newOTP[index] = e.target.value;
+                if (isNaN(Number(e.target.value))) return;
+                newOTP[index] = e.target.value.replace(otp[index], "")[0];
                 if (index < digits - 1 && e.target.value !== "") refs.current[index + 1]?.current.focus();
                 setOTP(newOTP);
               }}
-              maxLength={1}
             />
           ))}
         </div>
