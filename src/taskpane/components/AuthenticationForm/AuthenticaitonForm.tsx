@@ -73,7 +73,6 @@ const AuthenticaitonForm = () => {
   );
   return (
     <main className={app.$}>
-      <h1>Hello World</h1>
       <section>
         <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
           <img src={raisaLogo} alt="raisa logo" />
