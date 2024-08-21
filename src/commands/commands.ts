@@ -18,7 +18,7 @@ async function highlightSelection(event: Office.AddinCommands.Event) {
   try {
     await Excel.run(async (context) => {
       const range = context.workbook.getSelectedRange();
-      range.format.fill.color = "yellow";
+      range.format.fill.color = "pink";
       await context.sync();
     });
   } catch (error) {
