@@ -9,18 +9,16 @@ import Field from "../../poc-common/Field/Field";
 import { LOOKUPS, PARAMETERS, ParameterType } from "../../../../../../poc-data";
 
 const AssumptionsSelector = () => {
-  const [parameters, setParameters] = useLocalStorageState<ParameterType[]>(
-    "economicParameters",
-    JSON.stringify(PARAMETERS)
-  );
-  const [lookups, setLookups] = useLocalStorageState<Lookup[]>("lookups", JSON.stringify(LOOKUPS));
+  const [parameters, setParameters] = useLocalStorageState<ParameterType[]>("economicParameters", PARAMETERS);
+  const [lookups, setLookups] = useLocalStorageState<Lookup[]>("lookups", LOOKUPS);
 
   const { setLookup } = useLookup();
   React.useEffect(() => {
     // setLookup(LOOKUPS[0]);
   }, []);
   const [currentParameter, setCurrentParameter] = React.useState(0);
-  const filteredLookups = lookups.filter((lookup) => lookup.parameterID === currentParameter);
+  console.log(typeof lookups);
+  const filteredLookups = lookups ? lookups.filter((lookup) => lookup.parameterID === currentParameter) : [];
   return (
     <article className={APP_NS.assumptionsSelectorContainer.$}>
       <Field label="Select Economic Parameter">
