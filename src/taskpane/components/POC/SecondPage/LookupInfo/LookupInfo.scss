@@ -1,0 +1,48 @@
+.excel-addin {
+  &-lookup-info-container {
+    background-color: #f5f6f7;
+    border-radius: 8px;
+    padding: 1.2rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+
+  &-multiselect-container-poc {
+    display: flex;
+    gap: 0.8rem;
+  }
+  &-multiselect-item-poc {
+    display: flex;
+    align-items: center;
+    height: 2.4rem;
+    background-color: #e5e5e5 !important;
+    font-family: "Poppins" !important;
+    font-weight: 400 !important;
+    font-size: 1.2rem !important;
+    line-height: 1.38rem !important;
+    color: #404040 !important;
+    padding: 0.2rem 0.8rem !important;
+    border-radius: 2.4rem !important;
+  }
+  &-meta-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    border-radius: 4px;
+    padding: 1.2rem;
+    background-color: #e5e5e599;
+
+    &__meta-item {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      font-family: "Lato" !important;
+      font-weight: 400 !important;
+      font-size: 1.2rem !important;
+      line-height: 1.44rem !important;
+      letter-spacing: -0.43px !important;
+      color: #000000 !important;
+    }
+  }
+}

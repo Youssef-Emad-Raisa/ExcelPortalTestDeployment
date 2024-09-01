@@ -1,0 +1,25 @@
+.excel-addin {
+  &-nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &__back-button {
+      width: 2.4rem;
+      height: 2.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    &__header label {
+      font-family: "Poppins" !important;
+      font-weight: 500 !important;
+      font-size: 2rem !important;
+      line-height: 3rem !important;
+      color: #404040 !important;
+    }
+  }
+}

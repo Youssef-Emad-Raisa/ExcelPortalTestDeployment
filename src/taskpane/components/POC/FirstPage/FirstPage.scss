@@ -1,0 +1,57 @@
+.excel-addin {
+  &-first-page {
+    display: flex;
+    flex-direction: column;
+    gap: 4.2rem;
+    padding: 4.73rem 3.8rem;
+  }
+
+  &-welcome-section {
+    display: flex;
+    justify-content: center;
+  }
+
+  &-welcome-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    max-width: 43.1rem;
+    justify-content: center;
+  }
+
+  &-image-container {
+    display: flex;
+    justify-content: center;
+
+    &__image {
+      height: 18rem;
+      aspect-ratio: 1 / 1;
+    }
+  }
+
+  &-welcome-text-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    color: #404040;
+  }
+
+  &-header-container {
+    display: flex;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 2rem;
+    line-height: 3rem;
+  }
+
+  &-text-container {
+    display: flex;
+    justify-content: center;
+    font-weight: 400;
+    font-size: 1.6rem;
+    text-align: center;
+    line-height: 2.4rem;
+  }
+}

@@ -1,0 +1,18 @@
+.excel-addin {
+  &-field-poc {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.8rem !important;
+
+    label {
+      margin: 0 !important;
+      padding: 0 !important;
+      font-family: "Manrope", sans-serif !important;
+      font-weight: 400 !important;
+      font-style: normal !important;
+      font-size: 1.6rem !important;
+      color: #69696b !important;
+      line-height: 2.4rem !important;
+    }
+  }
+}

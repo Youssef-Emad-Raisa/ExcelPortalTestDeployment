@@ -1,0 +1,23 @@
+.excel-addin {
+  &-button-poc {
+    font-family: "Lato" !important;
+    font-weight: 700 !important;
+    font-size: 1.4rem !important;
+    line-height: 2.1rem !important;
+    height: 4rem !important;
+    padding: 0.9rem 1.6rem !important;
+    background-color: #4a4a4a !important;
+    user-select: none !important;
+  }
+
+  &-button-poc:hover {
+    background-color: #373737 !important;
+  }
+  &-button-poc:active {
+    background-color: #2e2e2e !important;
+  }
+  &-button-poc:disabled {
+    color: #9b9b9b !important;
+    background-color: #dddfe2 !important;
+  }
+}

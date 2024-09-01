@@ -2,16 +2,6 @@ import { WorksheetInfo } from "../types";
 import { MergedField } from "./types";
 
 /**
- * Gets the range of the first cell A1 in current context and target sheet so you could offset it by row and column like i, j
- *
- * @param {Excel.RequestContext} context Excel context used
- * @param {string} worksheetID  Target Excel worksheet ID
- * @returns {Excel.Range} Range object of the first cell "A1"
- */
-const __getFirstCell = (context: Excel.RequestContext, worksheetID: string): Excel.Range =>
-  context.workbook.worksheets.getItem(worksheetID).getRange("A1");
-
-/**
  * Gets all worksheets in workbook and loads basic sheet data (id, name, position)
  *
  * @returns {WorksheetInfo}
@@ -80,12 +70,10 @@ export const addRange = (
 ) => {
   return Excel.run(async (context) => {
     // gets the first cell from the first worksheet
-    const range = __getFirstCell(context, worksheetID);
-    // resizes and offsets the range to fit the values passed and the position needed
-    const targetRange = range
-      .getOffsetRange(rowIndex, columnIndex)
-      .getResizedRange(values.length - 1, values[0].length - 1);
-    targetRange.set({
+    const range = context.workbook.worksheets
+      .getItem(worksheetID)
+      .getRangeByIndexes(rowIndex, columnIndex, values.length, values[0].length);
+    range.set({
       ...options,
       values,
     });
@@ -111,12 +99,12 @@ export const addMergedRow = (
   options: Excel.Interfaces.RangeUpdateData = {}
 ) => {
   return Excel.run(async (context) => {
-    // gets the first cell from the first worksheet
-    const range = __getFirstCell(context, worksheetID);
     // keeps track of which column would be used for current field
     let cummulativeColumn = columnIndex;
     values.forEach((value) => {
-      const mergedRange = range.getOffsetRange(rowIndex, cummulativeColumn).getResizedRange(0, value.span - 1);
+      const mergedRange = context.workbook.worksheets
+        .getItem(worksheetID)
+        .getRangeByIndexes(rowIndex, cummulativeColumn, 1, value.span);
       mergedRange.merge();
       mergedRange.set({
         ...options,
@@ -226,13 +214,11 @@ export const formatCell = (
   promptTitle: string,
   promptMsg: string
 ) => {
-  const targetCell = __getFirstCell(context, worksheetID).getOffsetRange(row, column);
-  targetCell.format.fill.color = color;
-  targetCell.dataValidation.prompt = {
-    message: promptMsg,
-    showPrompt: true,
-    title: promptTitle,
-  };
+  const targetCell = context.workbook.worksheets.getItem(worksheetID).getRangeByIndexes(row, column, 1, 1);
+  targetCell.set({
+    format: { fill: { color } },
+    dataValidation: { prompt: { message: promptMsg, showPrompt: true, title: promptTitle } },
+  });
 };
 
 /**

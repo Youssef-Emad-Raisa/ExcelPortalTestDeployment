@@ -22,8 +22,6 @@
     "signin": "office-addin-dev-settings m365-account login",
     "signout": "office-addin-dev-settings m365-account logout",
     "start": "office-addin-debugging start manifest.xml",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
     "start:desktop": "office-addin-debugging start manifest.xml desktop",
     "start:web": "office-addin-debugging start manifest.xml web",
     "stop": "office-addin-debugging stop manifest.xml",
@@ -42,6 +40,7 @@
     "sass": "^1.77.8",
     "sass-loader": "^14.2.1",
     "style-loader": "^4.0.0",
+    "svg-url-loader": "^8.0.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

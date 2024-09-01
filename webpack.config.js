@@ -5,16 +5,41 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 const Dotenv = require("dotenv-webpack");
-const urlDev = "https://localhost:3000/";
-const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
+const DE = require("dotenv");
 
 async function getHttpsOptions() {
   const httpsOptions = await devCerts.getHttpsServerOptions();
   return { ca: httpsOptions.ca, key: httpsOptions.key, cert: httpsOptions.cert };
 }
 
+const renderManifest = (template, context) => {
+  let result = template;
+  for (key in context) result = result.replace(new RegExp(`{{${key}}}`, "g"), context[key]);
+  return result;
+};
+
 module.exports = async (env, options) => {
-  const dev = options.mode === "development";
+  const envConfig = DE.config({ path: "./.env" }).parsed;
+  const mode = envConfig["MODE"] ?? options.mode;
+
+  let env_path = "./.env";
+  switch (mode) {
+    case "production": {
+      env_path = "./.env.production";
+      break;
+    }
+    case "testing": {
+      env_path = "./.env.testing";
+      break;
+    }
+  }
+  const dynamicEnv = DE.config({ path: env_path }).parsed;
+  const context = {
+    MANIFEST_URL: dynamicEnv["URL"],
+    MANIFEST_ID: dynamicEnv["MANIFEST_ID"],
+    MANIFEST_VERSION: envConfig["VERSION"],
+  };
+
   const config = {
     devtool: "source-map",
     entry: {
@@ -76,6 +101,17 @@ module.exports = async (env, options) => {
             },
           ],
         },
+        {
+          test: /\.svg$/,
+          use: [
+            {
+              loader: "svg-url-loader",
+              options: {
+                limit: 10000,
+              },
+            },
+          ],
+        },
       ],
     },
     plugins: [
@@ -89,11 +125,7 @@ module.exports = async (env, options) => {
             from: "manifest*.xml",
             to: "[name]" + "[ext]",
             transform(content) {
-              if (dev) {
-                return content;
-              } else {
-                return content.toString().replace(new RegExp(urlDev, "g"), urlProd);
-              }
+              return renderManifest(content.toString(), context);
             },
           },
         ],
@@ -112,8 +144,7 @@ module.exports = async (env, options) => {
         Promise: ["es6-promise", "Promise"],
       }),
       new Dotenv({
-        path: "./.env", // Path to .env file (this is the default)
-        safe: true, // load .env.example (defaults to "false" which does not use dotenv-safe)
+        path: env_path,
       }),
     ],
     devServer: {

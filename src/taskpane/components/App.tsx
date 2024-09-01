@@ -1,17 +1,18 @@
 import * as React from "react";
 import "./App.scss";
-import Dashboard from "./Dashboard";
-import { useUser } from "../../contexts/UserContext";
-import AuthenticaitonForm from "./AuthenticationForm/AuthenticaitonForm";
+import POC from "./POC/POC";
+import { LookupProvider } from "../../contexts/ParametersContext";
 
 interface Props {
   title: string;
 }
 
 const App: React.FC<Props> = (props: Props) => {
-  const { user } = useUser();
-  if (user === undefined) return <AuthenticaitonForm />;
-  return <Dashboard title={props.title} user={user} />;
+  return (
+    <LookupProvider>
+      <POC />
+    </LookupProvider>
+  );
 };
 
 export default App;

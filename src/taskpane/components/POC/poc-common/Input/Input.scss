@@ -1,0 +1,14 @@
+.excel-addin {
+  &-input-poc {
+    padding: 0.8rem 1.2rem !important;
+    height: 4rem !important;
+  }
+  &-input-poc input {
+    padding: 0 !important;
+    font-family: "Inter" !important;
+    font-weight: 500 !important;
+    font-size: 1.8rem !important;
+    line-height: 2.6rem !important;
+    // color: #111111 !important;
+  }
+}

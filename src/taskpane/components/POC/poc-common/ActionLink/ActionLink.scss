@@ -1,0 +1,16 @@
+.excel-addin {
+  &-action-link {
+    color: #404040 !important;
+    font-family: "Poppins", sans-serif !important;
+    font-style: normal !important;
+    font-size: 1.6rem !important;
+    font-weight: 500 !important;
+    line-height: 2.4rem !important;
+    cursor: pointer !important;
+    text-decoration: underline !important;
+    user-select: none !important;
+  }
+  &-action-link:active {
+    color: #626161 !important;
+  }
+}
