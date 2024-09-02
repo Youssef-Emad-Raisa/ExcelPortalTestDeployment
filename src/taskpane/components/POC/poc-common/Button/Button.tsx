@@ -5,7 +5,14 @@ import "./Button.scss";
 
 type Props = ButtonProps & {};
 const Button = ({ className, ...props }: Props) => {
-  return <FluentButton className={APP_NS.buttonPoc.$ + " " + className} appearance="primary" {...props} />;
+  const isSecondary = props.appearance === "secondary";
+  return (
+    <FluentButton
+      className={APP_NS.buttonPoc._.primary(!isSecondary).secondary(isSecondary).$ + " " + className}
+      appearance="primary"
+      {...props}
+    />
+  );
 };
 
 export default Button;

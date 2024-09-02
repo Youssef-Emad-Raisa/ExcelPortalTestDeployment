@@ -6,18 +6,40 @@
     line-height: 2.1rem !important;
     height: 4rem !important;
     padding: 0.9rem 1.6rem !important;
-    background-color: #4a4a4a !important;
     user-select: none !important;
-  }
+    border-radius: 4px !important;
 
-  &-button-poc:hover {
-    background-color: #373737 !important;
-  }
-  &-button-poc:active {
-    background-color: #2e2e2e !important;
-  }
-  &-button-poc:disabled {
-    color: #9b9b9b !important;
-    background-color: #dddfe2 !important;
+    &--primary {
+      background-color: #4a4a4a !important;
+      &:hover {
+        background-color: #373737 !important;
+      }
+      &:active {
+        background-color: #2e2e2e !important;
+      }
+      &:disabled {
+        color: #9b9b9b !important;
+        background-color: #dddfe2 !important;
+      }
+    }
+    &--secondary {
+      background-color: transparent !important;
+      border: 1px solid #4a4a4a !important;
+      &:hover {
+        background-color: transparent !important;
+        border-color: #555555 !important;
+        color: #555555 !important;
+      }
+      &:active {
+        background-color: transparent !important;
+        border-color: #666666 !important;
+        color: #666666 !important;
+      }
+      &:disabled {
+        background-color: transparent !important;
+        color: #9b9b9b !important;
+        border-color: #dddfe2 !important;
+      }
+    }
   }
 }

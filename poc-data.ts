@@ -1,40 +1,28 @@
-import { Lookup } from "./src/contexts/ParametersContext";
+import assumptions from "./assumptions";
+import { definitionsMap } from "./src/common/Definitions/Definitions";
+import { DefinitionInfo } from "./src/common/Definitions/types";
+import { Lookup } from "./src/contexts/LookupContext";
 
-export type ParameterType = {
+export type ParameterType<T> = {
   id: number;
   name: string;
+  definitionInfo: DefinitionInfo<T>;
 };
 export type TagType = {
   id: number;
   name: string;
 };
 
-export const PARAMETERS: ParameterType[] = [
-  { id: 0, name: "LOE" },
-  { id: 1, name: "M&G" },
-  { id: 2, name: "Differentials" },
-  { id: 3, name: "Price Decks" },
-  { id: 4, name: "Stream Properties" },
-];
-export const TAGS: TagType[] = [
-  { id: 0, name: "Tag 0" },
-  { id: 1, name: "Tag 1" },
-  { id: 2, name: "Tag 2" },
-  { id: 3, name: "Tag 3" },
-  { id: 4, name: "Tag 4" },
+export const PARAMETERS: ParameterType<any>[] = [
+  { id: 0, name: "LOE", definitionInfo: definitionsMap[0] },
+  { id: 1, name: "M&G", definitionInfo: definitionsMap[1] },
+  { id: 2, name: "Differentials", definitionInfo: definitionsMap[1] },
+  { id: 3, name: "Price Decks", definitionInfo: definitionsMap[1] },
+  { id: 4, name: "Stream Properties", definitionInfo: definitionsMap[1] },
 ];
 
-export const LOOKUPS: Lookup[] = [
-  {
-    id: 1,
-    parameterID: 0,
-    createdBy: "",
-    createdOn: new Date().toISOString(),
-    lastUpdatedAt: new Date().toISOString(),
-    lastPushedAt: new Date().toISOString(),
-    description: "",
-    assumptions: [],
-    tags: [],
-    lookupName: "Test",
-  },
-];
+const allTags: string[] = assumptions.map((assumption) => assumption.tags).flat();
+const uniqueTags = allTags.filter((item, pos) => allTags.indexOf(item) === pos);
+export const TAGS: TagType[] = uniqueTags.map((tag, index) => {
+  return { id: index, name: tag };
+});

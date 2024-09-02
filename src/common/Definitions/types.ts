@@ -13,6 +13,7 @@ export type DefinitionInfo<T> = {
   name: string;
   definition: Definition<T>[];
   validators: FieldValidationRule<T>[];
+  flat: (record: any) => T;
   get: () => Promise<any>;
   post: (data) => Promise<any>;
   headerRowSpan: number;

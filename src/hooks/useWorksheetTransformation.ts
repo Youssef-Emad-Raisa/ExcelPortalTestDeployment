@@ -1,5 +1,12 @@
 import React from "react";
-import { addMergedRow, addRange, createNewWorksheet, getRow, getUsedRows } from "../services/Excel services/Excel";
+import {
+  addMergedRow,
+  addRange,
+  createNewWorksheet,
+  getRow,
+  getUsedRows,
+  ListenToSheetOnChange,
+} from "../services/Excel services/Excel";
 import {
   createArrayOfDefinitionColumnAccessKey,
   createArrayOfDefinitionColumnHeader,
@@ -11,17 +18,30 @@ import { HEADER_OPTIONS, MERGED_HEADER_OPTIONS } from "../services/Excel service
 const useWorksheetTransformation = <T>(worksheetID: string, definitonInfo: DefinitionInfo<T>) => {
   const [worksheetHeaders, setWorksheetHeaders] = React.useState([]);
   const [definitionKeysHeaderEquivalant, setDefinitionKeysHeaderEquivalant] = React.useState<T>({} as T);
-  React.useEffect(() => {
-    if (worksheetID === "" || worksheetID === undefined) return;
-    // gets the first row of the sheet and stores its values as the headers
+  const getHeadersFromSheet = React.useCallback(() => {
     getRow(worksheetID, 0).then((headers) => setWorksheetHeaders(headers));
+  }, [worksheetID]);
+
+  React.useEffect(() => {
+    setDefinitionKeysHeaderEquivalant({} as T);
+  }, [worksheetID]);
+  React.useEffect(() => {
+    if (worksheetID === "" || worksheetID === undefined) return undefined;
+    // gets the first row of the sheet and stores its values as the headers
+    getHeadersFromSheet();
+    const cleanerPromise = ListenToSheetOnChange(worksheetID, () => {
+      getHeadersFromSheet();
+    });
+    return () => {
+      cleanerPromise.then((cleanerFunc) => cleanerFunc());
+    };
   }, [worksheetID]);
 
   // gets header keys from the definition passed
   const accessKeys = definitonInfo ? createArrayOfDefinitionColumnAccessKey(definitonInfo.definition) : [];
 
   // creates transformed worksheet based on the definition keys
-  const createTransformedWorkSheet = async () => {
+  const createTransformedWorkSheet = async (targetWorksheetID: string = "") => {
     const rows = await getUsedRows(worksheetID, 1);
 
     const altRecords = rows.map((row) =>
@@ -32,7 +52,7 @@ const useWorksheetTransformation = <T>(worksheetID: string, definitonInfo: Defin
           return result;
         }, {})
     );
-    const newWorksheetID = await createNewWorksheet();
+    const targetWorksheet = targetWorksheetID === "" ? await createNewWorksheet() : targetWorksheetID;
 
     const transformation = altRecords.map((record) =>
       accessKeys.map((key) => {
@@ -41,11 +61,11 @@ const useWorksheetTransformation = <T>(worksheetID: string, definitonInfo: Defin
       })
     );
     const definition = definitonInfo.definition;
-    addMergedRow(0, 0, newWorksheetID, createMergedFieldsFromDefinitionHeaders(definition), MERGED_HEADER_OPTIONS);
-    addRange(1, 0, newWorksheetID, [createArrayOfDefinitionColumnHeader(definition)], HEADER_OPTIONS);
-    addRange(2, 0, newWorksheetID, transformation, { format: { columnWidth: 80 } });
+    addMergedRow(0, 0, targetWorksheet, createMergedFieldsFromDefinitionHeaders(definition), MERGED_HEADER_OPTIONS);
+    addRange(1, 0, targetWorksheet, [createArrayOfDefinitionColumnHeader(definition)], HEADER_OPTIONS);
+    addRange(2, 0, targetWorksheet, transformation, { format: { columnWidth: 80 } });
 
-    return newWorksheetID;
+    return targetWorksheet;
   };
   return {
     definitionKeysHeaderEquivalant,

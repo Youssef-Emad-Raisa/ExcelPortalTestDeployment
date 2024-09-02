@@ -1,29 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./AssumptionsSelector.scss";
 import { APP_NS } from "../../..";
 import { Dropdown, Option } from "../../poc-common/Lists";
-import { Lookup, useLookup } from "../../../../../contexts/ParametersContext";
+import { Lookup, useLookup } from "../../../../../contexts/LookupContext";
 import useLocalStorageState from "../../../../../../hooks/useLocalStorage";
 import LookupsList from "../LookupsList/LookupsList";
 import Field from "../../poc-common/Field/Field";
-import { LOOKUPS, PARAMETERS, ParameterType } from "../../../../../../poc-data";
+import { PARAMETERS, ParameterType } from "../../../../../../poc-data";
 
 const AssumptionsSelector = () => {
-  const [parameters, setParameters] = useLocalStorageState<ParameterType[]>("economicParameters", PARAMETERS);
-  const [lookups, setLookups] = useLocalStorageState<Lookup[]>("lookups", LOOKUPS);
-
-  const { setLookup } = useLookup();
-  React.useEffect(() => {
-    // setLookup(LOOKUPS[0]);
-  }, []);
+  const [parameters] = useLocalStorageState<ParameterType<any>[]>("economicParameters", PARAMETERS);
+  const [lookups] = useLocalStorageState<Lookup[]>("lookups", []);
+  const { lookup, setLookup } = useLookup();
   const [currentParameter, setCurrentParameter] = React.useState(0);
-  console.log(typeof lookups);
-  const filteredLookups = lookups ? lookups.filter((lookup) => lookup.parameterID === currentParameter) : [];
+  const filteredLookups = lookups.filter((lookup) => lookup.parameterID === currentParameter);
+  useEffect(() => {
+    setLookup({ ...lookup, parameterID: 0 });
+  }, []);
   return (
     <article className={APP_NS.assumptionsSelectorContainer.$}>
       <Field label="Select Economic Parameter">
         <Dropdown
-          onOptionSelect={(_, d) => setCurrentParameter(Number(d.optionValue))}
+          onOptionSelect={(_, d) => {
+            setCurrentParameter(Number(d.optionValue));
+            setLookup({ ...lookup, parameterID: Number(d.optionValue) });
+          }}
           defaultSelectedOptions={[parameters.find((parameter) => parameter.id === currentParameter).id.toString()]}
           defaultValue={parameters.find((parameter) => parameter.id === currentParameter).name}
         >

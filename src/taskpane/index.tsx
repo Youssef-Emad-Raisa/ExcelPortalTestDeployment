@@ -3,11 +3,8 @@ import { createRoot } from "react-dom/client";
 import App from "./components/App";
 import { FluentProvider, teamsLightTheme } from "@fluentui/react-components";
 import "./taskpane.css";
-import { LOOKUPS, TAGS, PARAMETERS } from "../../poc-data";
 /* global document, Office, module, require, HTMLElement */
-LOOKUPS;
-TAGS;
-PARAMETERS;
+
 const title = "Excel Addin";
 
 const rootElement: HTMLElement | null = document.getElementById("container");

@@ -24,6 +24,12 @@
     color: #404040 !important;
     padding: 0.2rem 0.8rem !important;
     border-radius: 2.4rem !important;
+    max-width: 14rem !important;
+  }
+  &-multiselect-item-poc p {
+    overflow: hidden;
+    text-overflow: ellipsis !important;
+    text-wrap: nowrap !important;
   }
   &-meta-container {
     display: flex;

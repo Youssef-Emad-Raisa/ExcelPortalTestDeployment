@@ -136,6 +136,13 @@ export const definitionsMap: DefinitionInfo<any>[] = [
     validators: lookupValidations,
     get: getLookup,
     post: postLookup,
+    flat(record) {
+      const { cluster, ...recordWithoutCluster } = record;
+      return {
+        ...recordWithoutCluster,
+        ...cluster,
+      };
+    },
     headerRowSpan: 2,
   },
   {
@@ -145,6 +152,13 @@ export const definitionsMap: DefinitionInfo<any>[] = [
     validators: [],
     get: getLookup,
     post: postLookup,
+    flat(record) {
+      const { cluster, ...recordWithoutCluster } = record;
+      return {
+        ...recordWithoutCluster,
+        ...cluster,
+      };
+    },
     headerRowSpan: 2,
   },
 ];

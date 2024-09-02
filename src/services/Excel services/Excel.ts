@@ -69,6 +69,7 @@ export const addRange = (
   options?: Excel.Interfaces.RangeUpdateData
 ) => {
   return Excel.run(async (context) => {
+    if (values.length === 0) return await context.sync();
     // gets the first cell from the first worksheet
     const range = context.workbook.worksheets
       .getItem(worksheetID)
@@ -233,9 +234,11 @@ export const ListenToSheetOnChange = (worksheetID: string, func) => {
     const worksheet = context.workbook.worksheets.getItem(worksheetID);
     worksheet.onChanged.add(func);
     await context.sync();
+    console.log("Listener Wired for sheet " + worksheetID);
     return async () => {
       worksheet.onChanged.remove(func);
       await context.sync();
+      console.log("Listener Unwired for sheet " + worksheetID);
     };
   });
 };
