@@ -82,6 +82,25 @@ export const addRange = (
   });
 };
 
+export const appendRange = (worksheetID: string, values: any[][], options?: Excel.Interfaces.RangeUpdateData) => {
+  return Excel.run(async (context) => {
+    if (values.length === 0) return await context.sync();
+    const usedRange = context.workbook.worksheets.getItem(worksheetID).getUsedRange();
+    usedRange.load("rowCount");
+    await context.sync();
+    const lastRow = usedRange.rowCount;
+    // gets the first cell from the first worksheet
+    const range = context.workbook.worksheets
+      .getItem(worksheetID)
+      .getRangeByIndexes(lastRow, 0, values.length, values[0].length);
+    range.set({
+      ...options,
+      values,
+    });
+    return await context.sync();
+  });
+};
+
 /**
  * Adds merged row which contains values and their cell span in an object of type MergedField
  *
@@ -287,9 +306,9 @@ export const getValueOfActiveCell = () => {
  *
  * @returns {Promise<string>} Promise containing the id of the new worksheet
  */
-export const createNewWorksheet = (): Promise<string> => {
+export const createNewWorksheet = (name?: string): Promise<string> => {
   return Excel.run(async (context) => {
-    const newWorksheet = context.workbook.worksheets.add();
+    const newWorksheet = context.workbook.worksheets.add(name);
     newWorksheet.load("id");
     await context.sync();
     return newWorksheet.id;

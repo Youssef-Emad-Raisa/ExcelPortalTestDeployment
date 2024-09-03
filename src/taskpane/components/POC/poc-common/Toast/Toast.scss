@@ -1,0 +1,24 @@
+.excel-addin {
+  &-toast-poc-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #f5f6f7;
+    border: 1px solid #4a4a4a;
+    padding: 0.8rem 1.2rem;
+    border-radius: 4px;
+    display: flex;
+    gap: 1.6rem;
+    width: 31.5rem;
+    height: 6.4rem;
+    margin-top: 1.6rem;
+    margin-right: 1.6rem;
+  }
+  &-toast-logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+  }
+}

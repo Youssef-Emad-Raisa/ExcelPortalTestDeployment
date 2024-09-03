@@ -9,6 +9,7 @@ import { Lookup, useLookup } from "../../../../../contexts/LookupContext";
 import useLocalStorageState from "../../../../../../hooks/useLocalStorage";
 import { useSaveChanges } from "../../../../../contexts/SaveChangesContext";
 import _ from "lodash";
+import Toast from "../../poc-common/Toast/Toast";
 type Props = {
   title: string;
   onBackButtonClick(): void;
@@ -18,8 +19,10 @@ const NavBar = ({ title, onBackButtonClick }: Props) => {
   const { lookup, setLookup } = useLookup();
 
   const { isSaved, setIsSaved } = useSaveChanges();
+  const [showToast, setShowToast] = React.useState(false);
   return (
     <div className={APP_NS.navContainer.$}>
+      {showToast && <Toast title="The lookup has been pushed to the database successfully."></Toast>}
       <div className={APP_NS.navContainer.backButton.$} onClick={onBackButtonClick}>
         <img src={ArrowLeft} alt="Back" />
       </div>
@@ -39,6 +42,8 @@ const NavBar = ({ title, onBackButtonClick }: Props) => {
               JSON.stringify([...lookups.filter((lp) => lp.id !== lookup.id), localStorageLookup])
             );
             setLookup(_.cloneDeep(localStorageLookup));
+            setShowToast(true);
+            setTimeout(() => setShowToast(false), 5000);
           }}
         >
           Push Lookup

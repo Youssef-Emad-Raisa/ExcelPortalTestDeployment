@@ -43,6 +43,7 @@
     "sass": "^1.77.8",
     "sass-loader": "^14.2.1",
     "style-loader": "^4.0.0",
+    "svg-url-loader": "^8.0.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./ColumnMappin.scss";
 import { APP_NS } from "../../..";
 import { useLookup } from "../../../../../contexts/LookupContext";
@@ -27,6 +27,10 @@ const ColumnMapping = () => {
     definitionKeysHeaderEquivalant,
     createTransformedWorkSheet,
   } = useWorksheetTransformation(state.activeWorksheetID, definitionInfo);
+
+  useEffect(() => {
+    return () => setDefinitionKeysHeaderEquivalant({});
+  }, []);
   return (
     <div className={APP_NS.columnMappingContainer.$}>
       {definition.map((group) => (
@@ -39,7 +43,6 @@ const ColumnMapping = () => {
               <Field label={item.colHeaderTitle} key={item.accessorKey}>
                 <Combobox
                   placeholder="Select header"
-                  value={definitionKeysHeaderEquivalant[item.accessorKey]}
                   onOptionSelect={(_, data) =>
                     setDefinitionKeysHeaderEquivalant({
                       ...definitionKeysHeaderEquivalant,
@@ -62,8 +65,7 @@ const ColumnMapping = () => {
       <div>
         <Button
           onClick={async () => {
-            const transformedWorksheet = await createTransformedWorkSheet();
-            setDefinitionKeysHeaderEquivalant({});
+            const transformedWorksheet = await createTransformedWorkSheet(relation.worksheetID);
             activateWorksheet(transformedWorksheet);
           }}
         >

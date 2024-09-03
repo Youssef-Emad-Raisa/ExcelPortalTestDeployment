@@ -2,6 +2,7 @@ import React from "react";
 import {
   addMergedRow,
   addRange,
+  appendRange,
   createNewWorksheet,
   getRow,
   getUsedRows,
@@ -22,9 +23,6 @@ const useWorksheetTransformation = <T>(worksheetID: string, definitonInfo: Defin
     getRow(worksheetID, 0).then((headers) => setWorksheetHeaders(headers));
   }, [worksheetID]);
 
-  React.useEffect(() => {
-    setDefinitionKeysHeaderEquivalant({} as T);
-  }, [worksheetID]);
   React.useEffect(() => {
     if (worksheetID === "" || worksheetID === undefined) return undefined;
     // gets the first row of the sheet and stores its values as the headers
@@ -61,9 +59,11 @@ const useWorksheetTransformation = <T>(worksheetID: string, definitonInfo: Defin
       })
     );
     const definition = definitonInfo.definition;
-    addMergedRow(0, 0, targetWorksheet, createMergedFieldsFromDefinitionHeaders(definition), MERGED_HEADER_OPTIONS);
-    addRange(1, 0, targetWorksheet, [createArrayOfDefinitionColumnHeader(definition)], HEADER_OPTIONS);
-    addRange(2, 0, targetWorksheet, transformation, { format: { columnWidth: 80 } });
+    if (!targetWorksheetID) {
+      addMergedRow(0, 0, targetWorksheet, createMergedFieldsFromDefinitionHeaders(definition), MERGED_HEADER_OPTIONS);
+      addRange(1, 0, targetWorksheet, [createArrayOfDefinitionColumnHeader(definition)], HEADER_OPTIONS);
+    }
+    appendRange(targetWorksheet, transformation, { format: { columnWidth: 80 } });
 
     return targetWorksheet;
   };

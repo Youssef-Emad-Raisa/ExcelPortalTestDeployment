@@ -65,7 +65,7 @@ const LookupInfo = () => {
     <div className={APP_NS.lookupInfoContainer.$}>
       <Field label="Name">
         <Input
-          value={lookupInfoState.lookupName}
+          defaultValue={lookup.id === -1 ? "" : lookupInfoState.lookupName}
           onChange={(e, d) => setLookupInfoState({ ...lookupInfoState, lookupName: d.value })}
           placeholder="Lookup Name"
         />
@@ -101,7 +101,7 @@ const LookupInfo = () => {
       <div className={APP_NS.metaContainer.$}>
         <div className={APP_NS.metaContainer.metaItem.$}>
           <Label>Created by</Label>
-          <Label>{lookup.createdBy}</Label>
+          <Label>Franklin Saint</Label>
         </div>
         <div className={APP_NS.metaContainer.metaItem.$}>
           <Label>Created on</Label>

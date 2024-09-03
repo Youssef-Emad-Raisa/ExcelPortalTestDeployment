@@ -16,3 +16,9 @@ body {
   min-height: 100vh;
   background-color: white;
 }
+
+@media (max-width: 350px) {
+  html {
+    font-size: 42.5%;
+  }
+}

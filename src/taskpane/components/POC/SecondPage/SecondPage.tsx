@@ -21,19 +21,16 @@ const ArrowUp = <img src={AUp} alt="Arrow Up" />;
 const ArrowDown = <img src={ADown} alt="Arrow Down" />;
 
 const SecondPage = () => {
-  const [openItem, setOpenItems] = React.useState(2);
+  const [openItems, setOpenItems] = React.useState(["2"]);
   const { lookup, setLookup } = useLookup();
   const { isSaved, setIsSaved } = useSaveChanges();
   const { relations } = useWorksheetRelation();
   const [lookups] = useLocalStorageState<Lookup[]>("lookups", {});
 
-  console.log("Second");
-  console.log(lookup);
   React.useEffect(() => {
     const relation = relations.find((relation) => relation.lookupID === lookup.id);
     const worksheetID = relation.worksheetID;
     if (worksheetID === "" || worksheetID === undefined) return undefined;
-    // gets the first row of the sheet and stores its values as the headers
     const cleanerPromise = ListenToSheetOnChange(worksheetID, () => setIsSaved({ ...isSaved, worksheet: false }));
     return () => {
       cleanerPromise.then((cleanerFunc) => cleanerFunc());
@@ -45,22 +42,23 @@ const SecondPage = () => {
       <div className={APP_NS.accordActionContainer.$}>
         <Accordion
           onToggle={(_, data) => {
-            setOpenItems(data.openItems.length ? (data.openItems[0] as number) : 0);
+            setOpenItems(data.openItems as string[]);
             console.log(data);
           }}
-          openItems={openItem}
+          openItems={openItems}
           collapsible
+          multiple
         >
-          <AccordionItem value={1}>
-            <AccordionHeader expandIcon={openItem === 1 ? ArrowUp : ArrowDown} expandIconPosition="end">
+          <AccordionItem value={"1"}>
+            <AccordionHeader expandIcon={openItems.includes("1") ? ArrowUp : ArrowDown} expandIconPosition="end">
               Column Mapping
             </AccordionHeader>
             <AccordionPanel>
               <ColumnMapping />
             </AccordionPanel>
           </AccordionItem>
-          <AccordionItem value={2}>
-            <AccordionHeader expandIcon={openItem === 2 ? ArrowUp : ArrowDown} expandIconPosition="end">
+          <AccordionItem value={"2"}>
+            <AccordionHeader expandIcon={openItems.includes("2") ? ArrowUp : ArrowDown} expandIconPosition="end">
               Lookup info
             </AccordionHeader>
             <AccordionPanel>

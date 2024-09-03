@@ -26,14 +26,16 @@ type Props = {
   currentParameter: number;
 };
 function buildWorksheet<T>(targetWorksheet: string, definition: Definition<T>[], data: any[][]) {
-  addMergedRow(0, 0, targetWorksheet, createMergedFieldsFromDefinitionHeaders(definition), MERGED_HEADER_OPTIONS);
-  addRange(1, 0, targetWorksheet, [createArrayOfDefinitionColumnHeader(definition)], HEADER_OPTIONS);
-  addRange(2, 0, targetWorksheet, data, { format: { columnWidth: 80 } });
+  return Promise.all([
+    addMergedRow(0, 0, targetWorksheet, createMergedFieldsFromDefinitionHeaders(definition), MERGED_HEADER_OPTIONS),
+    addRange(1, 0, targetWorksheet, [createArrayOfDefinitionColumnHeader(definition)], HEADER_OPTIONS),
+    addRange(2, 0, targetWorksheet, data, { format: { columnWidth: 80 } }),
+  ]);
 }
 
 const LookupsList = ({ items, currentParameter }: Props) => {
   const [activeLookup, setActiveLookup] = React.useState(-1);
-  const { setLookup } = useLookup();
+  const { lookup, setLookup } = useLookup();
   const { relations, setRelations } = useWorksheetRelation();
   return (
     <div className={APP_NS.listActionContainer.$}>
@@ -45,9 +47,12 @@ const LookupsList = ({ items, currentParameter }: Props) => {
             onDoubleClick={async () => {
               const filteredRelations = relations.filter((relation) => relation.lookupID !== -1);
               const parameter = PARAMETERS.find((param) => param.id === currentParameter);
-              const worksheetID = await createNewWorksheet();
-              buildWorksheet(worksheetID, parameter.definitionInfo.definition, []);
-              activateWorksheet(worksheetID);
+              const fakeID = Date.now().toString();
+              const worksheetID = await createNewWorksheet(
+                "New Lookup" + " | " + fakeID.slice((2 * fakeID.length) / 3)
+              );
+              await activateWorksheet(worksheetID);
+              await buildWorksheet(worksheetID, parameter.definitionInfo.definition, []).then();
               setLookup({ id: -1, parameterID: currentParameter, lookupName: "New Lookup" });
               setRelations([...filteredRelations, { lookupID: -1, worksheetID: worksheetID }]);
             }}
@@ -60,9 +65,13 @@ const LookupsList = ({ items, currentParameter }: Props) => {
               onClick={() => setActiveLookup(lookup.id)}
               onDoubleClick={async () => {
                 const filteredRelations = relations.filter((relation) => relation.lookupID !== lookup.id);
-                const worksheetID = await createNewWorksheet();
+                const fakeID = Date.now().toString();
+                const worksheetID = await createNewWorksheet(
+                  lookup.lookupName + " | " + fakeID.slice((2 * fakeID.length) / 3)
+                );
                 const parameter = PARAMETERS.find((param) => param.id === currentParameter);
-                buildWorksheet(
+                await activateWorksheet(worksheetID);
+                await buildWorksheet(
                   worksheetID,
                   parameter.definitionInfo.definition,
                   lookup.assumptions
@@ -71,7 +80,6 @@ const LookupsList = ({ items, currentParameter }: Props) => {
                       convertSchemaIntoDefinitionColumnsArray(record, parameter.definitionInfo.definition)
                     )
                 );
-                activateWorksheet(worksheetID);
                 setRelations([...filteredRelations, { lookupID: lookup.id, worksheetID: worksheetID }]);
                 setLookup(lookup);
               }}
@@ -86,7 +94,10 @@ const LookupsList = ({ items, currentParameter }: Props) => {
         <ActionLink
           action={async () => {
             const parameter = PARAMETERS.find((param) => param.id === currentParameter);
-            const targetWorksheet = await createNewWorksheet();
+            const fakeID = Date.now().toString();
+            const targetWorksheet = await createNewWorksheet(
+              "Assumptions Sheet" + " | " + fakeID.slice((2 * fakeID.length) / 3)
+            );
             buildWorksheet(
               targetWorksheet,
               parameter.definitionInfo.definition,
