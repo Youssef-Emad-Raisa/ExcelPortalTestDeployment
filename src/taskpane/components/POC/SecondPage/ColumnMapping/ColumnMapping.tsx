@@ -66,12 +66,12 @@ const ColumnMapping = () => {
             const fakeID = Date.now().toString();
             // const name = state.availableWorksheets.find((worksheet) => worksheet.id === state.activeWorksheetID).name;
             const transformedWorksheet = await createTransformedWorkSheet(
-              "Transformed | " + fakeID.slice((2 * fakeID.length) / 3)
+              "Reformat | " + fakeID.slice((2 * fakeID.length) / 3)
             );
             activateWorksheet(transformedWorksheet);
           }}
         >
-          Transform
+          Reformat
         </Button>
       </div>
     </div>
