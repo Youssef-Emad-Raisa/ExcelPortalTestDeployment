@@ -39,7 +39,7 @@ const useWorksheetTransformation = <T>(worksheetID: string, definitonInfo: Defin
   const accessKeys = definitonInfo ? createArrayOfDefinitionColumnAccessKey(definitonInfo.definition) : [];
 
   // creates transformed worksheet based on the definition keys
-  const createTransformedWorkSheet = async (targetWorksheetID: string = "") => {
+  const createTransformedWorkSheet = async (name?: string) => {
     const rows = await getUsedRows(worksheetID, 1);
 
     const altRecords = rows.map((row) =>
@@ -50,8 +50,8 @@ const useWorksheetTransformation = <T>(worksheetID: string, definitonInfo: Defin
           return result;
         }, {})
     );
-    const targetWorksheet = targetWorksheetID === "" ? await createNewWorksheet() : targetWorksheetID;
-
+    console.log(name);
+    const targetWorksheet = await createNewWorksheet(name);
     const transformation = altRecords.map((record) =>
       accessKeys.map((key) => {
         if (definitionKeysHeaderEquivalant[key] === undefined) return "";
@@ -59,11 +59,10 @@ const useWorksheetTransformation = <T>(worksheetID: string, definitonInfo: Defin
       })
     );
     const definition = definitonInfo.definition;
-    if (!targetWorksheetID) {
-      addMergedRow(0, 0, targetWorksheet, createMergedFieldsFromDefinitionHeaders(definition), MERGED_HEADER_OPTIONS);
-      addRange(1, 0, targetWorksheet, [createArrayOfDefinitionColumnHeader(definition)], HEADER_OPTIONS);
-    }
-    appendRange(targetWorksheet, transformation, { format: { columnWidth: 80 } });
+
+    addMergedRow(0, 0, targetWorksheet, createMergedFieldsFromDefinitionHeaders(definition), MERGED_HEADER_OPTIONS);
+    addRange(1, 0, targetWorksheet, [createArrayOfDefinitionColumnHeader(definition)], HEADER_OPTIONS);
+    addRange(2, 0, targetWorksheet, transformation, { format: { columnWidth: 80 } });
 
     return targetWorksheet;
   };

@@ -1,4 +1,9 @@
 .excel-addin {
+  &-accord-item-poc {
+    padding: 1.2rem 1.6rem !important;
+    border-radius: 8px !important;
+    background-color: #f5f6f7 !important;
+  }
   &-accord-item-poc > div > button {
     display: flex !important;
     height: 100% !important;

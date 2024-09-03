@@ -9,18 +9,16 @@ import Label from "../../poc-common/Label/Label";
 import Combobox from "../../poc-common/Lists/Option/Combobox";
 import Option from "../../poc-common/Lists/Option/Option";
 import useWorksheetTransformation from "../../../../../hooks/useWorksheetTransformation";
-import { useWorksheetRelation } from "../../../../../contexts/WorksheetContext";
 import Field from "../../poc-common/Field";
 import useWorksheets from "../../../../../hooks/useWorksheets";
 import Button from "../../poc-common/Button";
 import { activateWorksheet } from "../../../../../services/Excel services/Excel";
+import { Dropdown } from "../../poc-common/Lists";
 const ColumnMapping = () => {
   const { lookup } = useLookup();
   const definitionInfo = PARAMETERS.find((parameter) => parameter.id === lookup.parameterID).definitionInfo;
   const definition = definitionInfo.definition as Definition<FlattenedRecord>[];
   const [state] = useWorksheets();
-  const { relations, setRelations } = useWorksheetRelation();
-  const relation = relations.find((relation) => relation.lookupID === lookup.id);
   const {
     worksheetHeaders,
     setDefinitionKeysHeaderEquivalant,
@@ -41,7 +39,7 @@ const ColumnMapping = () => {
           <div className={APP_NS.group.fields.$}>
             {group.columns.map((item) => (
               <Field label={item.colHeaderTitle} key={item.accessorKey}>
-                <Combobox
+                <Dropdown
                   placeholder="Select header"
                   onOptionSelect={(_, data) =>
                     setDefinitionKeysHeaderEquivalant({
@@ -56,7 +54,7 @@ const ColumnMapping = () => {
                       {header}
                     </Option>
                   ))}
-                </Combobox>
+                </Dropdown>
               </Field>
             ))}
           </div>
@@ -65,7 +63,11 @@ const ColumnMapping = () => {
       <div>
         <Button
           onClick={async () => {
-            const transformedWorksheet = await createTransformedWorkSheet(relation.worksheetID);
+            const fakeID = Date.now().toString();
+            // const name = state.availableWorksheets.find((worksheet) => worksheet.id === state.activeWorksheetID).name;
+            const transformedWorksheet = await createTransformedWorkSheet(
+              "Transformed | " + fakeID.slice((2 * fakeID.length) / 3)
+            );
             activateWorksheet(transformedWorksheet);
           }}
         >

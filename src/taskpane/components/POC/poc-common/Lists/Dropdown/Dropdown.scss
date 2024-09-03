@@ -1,13 +1,15 @@
 .excel-addin {
-  &-dropdown-poc button {
-    font-family: "Inter" !important;
-    font-weight: 500 !important;
-    font-style: normal !important;
-    font-size: 1.8rem !important;
-    // color: #111111 !important;
-    line-height: 2.6rem !important;
+  &-dropdown-poc {
     height: 4.2rem;
-    padding: 0.8rem 1.2rem !important;
     min-width: 1rem !important;
+    button {
+      font-family: "Inter" !important;
+      font-weight: 500 !important;
+      font-style: normal !important;
+      font-size: 1.8rem !important;
+      // color: #111111 !important;
+      line-height: 2.6rem !important;
+      padding: 0.8rem 1.2rem !important;
+    }
   }
 }

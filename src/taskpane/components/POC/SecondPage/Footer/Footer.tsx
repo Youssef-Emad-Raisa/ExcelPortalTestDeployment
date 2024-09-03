@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { APP_NS } from "../../..";
 import Button from "../../poc-common/Button";
 import "./Footer.scss";
-import { useWorksheetRelation } from "../../../../../contexts/WorksheetContext";
 import { Lookup, useLookup } from "../../../../../contexts/LookupContext";
 import { getUsedRows } from "../../../../../services/Excel services/Excel";
 import { useSaveChanges } from "../../../../../contexts/SaveChangesContext";
@@ -12,6 +11,7 @@ import useLocalStorageState from "../../../../../../hooks/useLocalStorage";
 import { useLookupInfo } from "../../../../../contexts/LookupInfoContext";
 import _ from "lodash";
 import Toast from "../../poc-common/Toast/Toast";
+import useWorksheets from "../../../../../hooks/useWorksheets";
 
 const Footer = () => {
   const { lookup, setLookup } = useLookup();
@@ -19,18 +19,17 @@ const Footer = () => {
   const [lookups, setLookups] = useLocalStorageState<Lookup[]>("lookups", {});
 
   const { isSaved, setIsSaved } = useSaveChanges();
-  const { relations } = useWorksheetRelation();
   const definitionInfo = PARAMETERS.find((parameter) => parameter.id === lookup.parameterID).definitionInfo;
-  const relation = relations.find((relation) => relation.lookupID === lookup.id);
   const [showToast, setShowToast] = React.useState(false);
+  const [state] = useWorksheets();
   return (
     <div className={APP_NS.footer.$}>
       {showToast && <Toast title="The changes have been saved successfully."></Toast>}
       <Button
         className={APP_NS.footer.button.$}
-        disabled={isSaved.content && isSaved.worksheet}
+        disabled={isSaved.exists && isSaved.content && isSaved.worksheet}
         onClick={() => {
-          getUsedRows(relation.worksheetID, definitionInfo.headerRowSpan)
+          getUsedRows(state.activeWorksheetID, definitionInfo.headerRowSpan)
             .then((values) => {
               const definition = definitionInfo.definition;
               values = values.map((row) => row.map((item) => (item === "" ? null : item)));
@@ -51,7 +50,7 @@ const Footer = () => {
               setLookup(_.cloneDeep(localStorageLookup));
             })
             .then(() => {
-              setIsSaved({ worksheet: true, content: true });
+              setIsSaved({ exists: true, worksheet: true, content: true });
             })
             .then(() => {
               setShowToast(true);

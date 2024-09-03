@@ -4,7 +4,6 @@ import { Lookup, useLookup } from "../../../../../contexts/LookupContext";
 import "./LookupsList.scss";
 import Field from "../../poc-common/Field";
 import ActionLink from "../../poc-common/ActionLink";
-import { useWorksheetRelation } from "../../../../../contexts/WorksheetContext";
 import {
   activateWorksheet,
   addMergedRow,
@@ -34,37 +33,22 @@ function buildWorksheet<T>(targetWorksheet: string, definition: Definition<T>[],
 }
 
 const LookupsList = ({ items, currentParameter }: Props) => {
-  const [activeLookup, setActiveLookup] = React.useState(-1);
-  const { lookup, setLookup } = useLookup();
-  const { relations, setRelations } = useWorksheetRelation();
+  const { setLookup } = useLookup();
   return (
     <div className={APP_NS.listActionContainer.$}>
       <Field label="Parameter Lookups">
         <div id="lookups-list" className={APP_NS.listContainer.$}>
           <div
-            className={APP_NS.listContainer.item.active(activeLookup === -1).$}
-            onClick={() => setActiveLookup(-1)}
-            onDoubleClick={async () => {
-              const filteredRelations = relations.filter((relation) => relation.lookupID !== -1);
-              const parameter = PARAMETERS.find((param) => param.id === currentParameter);
-              const fakeID = Date.now().toString();
-              const worksheetID = await createNewWorksheet(
-                "New Lookup" + " | " + fakeID.slice((2 * fakeID.length) / 3)
-              );
-              await activateWorksheet(worksheetID);
-              await buildWorksheet(worksheetID, parameter.definitionInfo.definition, []).then();
-              setLookup({ id: -1, parameterID: currentParameter, lookupName: "New Lookup" });
-              setRelations([...filteredRelations, { lookupID: -1, worksheetID: worksheetID }]);
-            }}
+            className={APP_NS.listContainer.item.$}
+            onClick={() => setLookup({ id: -1, parameterID: currentParameter, lookupName: "New Lookup" })}
           >
             <p>+ New Lookup</p>
           </div>
           {items.map((lookup) => (
             <div
-              className={APP_NS.listContainer.item.active(activeLookup === lookup.id).$}
-              onClick={() => setActiveLookup(lookup.id)}
-              onDoubleClick={async () => {
-                const filteredRelations = relations.filter((relation) => relation.lookupID !== lookup.id);
+              className={APP_NS.listContainer.item.$}
+              onClick={async () => {
+                setLookup(lookup);
                 const fakeID = Date.now().toString();
                 const worksheetID = await createNewWorksheet(
                   lookup.lookupName + " | " + fakeID.slice((2 * fakeID.length) / 3)
@@ -80,8 +64,6 @@ const LookupsList = ({ items, currentParameter }: Props) => {
                       convertSchemaIntoDefinitionColumnsArray(record, parameter.definitionInfo.definition)
                     )
                 );
-                setRelations([...filteredRelations, { lookupID: lookup.id, worksheetID: worksheetID }]);
-                setLookup(lookup);
               }}
               key={lookup.id}
             >

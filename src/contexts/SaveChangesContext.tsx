@@ -1,5 +1,5 @@
 import * as React from "react";
-type SavedType = { content: boolean; worksheet: boolean };
+type SavedType = { exists: boolean; content: boolean; worksheet: boolean };
 
 const SaveChanges = React.createContext<{
   isSaved: SavedType;
@@ -7,7 +7,7 @@ const SaveChanges = React.createContext<{
 }>(undefined);
 
 export const SaveChangesProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isSaved, setIsSaved] = React.useState<SavedType>({ content: true, worksheet: true });
+  const [isSaved, setIsSaved] = React.useState<SavedType>({ exists: false, content: true, worksheet: true });
   const value = { isSaved, setIsSaved };
   return <SaveChanges.Provider value={value}>{children}</SaveChanges.Provider>;
 };

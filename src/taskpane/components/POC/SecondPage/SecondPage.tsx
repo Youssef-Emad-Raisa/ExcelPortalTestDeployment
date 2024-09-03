@@ -12,30 +12,23 @@ import NavBar from "./NavBar";
 import Footer from "./Footer";
 import LookupInfo from "./LookupInfo";
 import ColumnMapping from "./ColumnMapping/ColumnMapping";
-import { useWorksheetRelation } from "../../../../contexts/WorksheetContext";
-import { ListenToSheetOnChange } from "../../../../services/Excel services/Excel";
+import { ListenToSheetOnChange, listenToWorksheetChanges } from "../../../../services/Excel services/Excel";
 import { useSaveChanges } from "../../../../contexts/SaveChangesContext";
 import useLocalStorageState from "../../../../../hooks/useLocalStorage";
+import useWorksheets from "../../../../hooks/useWorksheets";
 
 const ArrowUp = <img src={AUp} alt="Arrow Up" />;
 const ArrowDown = <img src={ADown} alt="Arrow Down" />;
 
 const SecondPage = () => {
-  const [openItems, setOpenItems] = React.useState(["2"]);
+  const [openItems, setOpenItems] = React.useState(["1"]);
   const { lookup, setLookup } = useLookup();
   const { isSaved, setIsSaved } = useSaveChanges();
-  const { relations } = useWorksheetRelation();
   const [lookups] = useLocalStorageState<Lookup[]>("lookups", {});
-
+  const [state] = useWorksheets();
   React.useEffect(() => {
-    const relation = relations.find((relation) => relation.lookupID === lookup.id);
-    const worksheetID = relation.worksheetID;
-    if (worksheetID === "" || worksheetID === undefined) return undefined;
-    const cleanerPromise = ListenToSheetOnChange(worksheetID, () => setIsSaved({ ...isSaved, worksheet: false }));
-    return () => {
-      cleanerPromise.then((cleanerFunc) => cleanerFunc());
-    };
-  }, []);
+    setIsSaved({ ...isSaved, worksheet: false });
+  }, [state.activeWorksheetID]);
   return (
     <main className={APP_NS.secondPage.$}>
       <NavBar title={lookup.lookupName} onBackButtonClick={() => setLookup(undefined)} />
@@ -51,18 +44,18 @@ const SecondPage = () => {
         >
           <AccordionItem value={"1"}>
             <AccordionHeader expandIcon={openItems.includes("1") ? ArrowUp : ArrowDown} expandIconPosition="end">
-              Column Mapping
-            </AccordionHeader>
-            <AccordionPanel>
-              <ColumnMapping />
-            </AccordionPanel>
-          </AccordionItem>
-          <AccordionItem value={"2"}>
-            <AccordionHeader expandIcon={openItems.includes("2") ? ArrowUp : ArrowDown} expandIconPosition="end">
               Lookup info
             </AccordionHeader>
             <AccordionPanel>
               <LookupInfo />
+            </AccordionPanel>
+          </AccordionItem>
+          <AccordionItem value={"2"}>
+            <AccordionHeader expandIcon={openItems.includes("2") ? ArrowUp : ArrowDown} expandIconPosition="end">
+              Column Mapping
+            </AccordionHeader>
+            <AccordionPanel>
+              <ColumnMapping />
             </AccordionPanel>
           </AccordionItem>
         </Accordion>

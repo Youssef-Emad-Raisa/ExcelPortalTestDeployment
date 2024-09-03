@@ -32,7 +32,7 @@ const NavBar = ({ title, onBackButtonClick }: Props) => {
       <div>
         <Button
           className={APP_NS.navContainer.button.$}
-          disabled={!(isSaved.content && isSaved.worksheet)}
+          disabled={!(isSaved.exists && isSaved.content && isSaved.worksheet)}
           onClick={() => {
             const lookups = JSON.parse(window.localStorage.getItem("lookups"));
             const localStorageLookup = lookups.find((look) => look.id === lookup.id);

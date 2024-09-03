@@ -307,6 +307,7 @@ export const getValueOfActiveCell = () => {
  * @returns {Promise<string>} Promise containing the id of the new worksheet
  */
 export const createNewWorksheet = (name?: string): Promise<string> => {
+  console.log(name);
   return Excel.run(async (context) => {
     const newWorksheet = context.workbook.worksheets.add(name);
     newWorksheet.load("id");
