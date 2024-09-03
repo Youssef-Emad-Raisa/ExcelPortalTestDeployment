@@ -20,7 +20,7 @@ const useWorksheetTransformation = <T>(worksheetID: string, definitonInfo: Defin
   const [worksheetHeaders, setWorksheetHeaders] = React.useState([]);
   const [definitionKeysHeaderEquivalant, setDefinitionKeysHeaderEquivalant] = React.useState<T>({} as T);
   const getHeadersFromSheet = React.useCallback(() => {
-    getRow(worksheetID, 0).then((headers) => setWorksheetHeaders(headers));
+    getRow(worksheetID, 0).then((headers) => setWorksheetHeaders(headers.filter((header) => header !== "")));
   }, [worksheetID]);
 
   React.useEffect(() => {
